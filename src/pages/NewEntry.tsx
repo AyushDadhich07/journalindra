@@ -28,13 +28,14 @@ const NewEntry = () => {
 
     setIsSubmitting(true);
     try {
-      // Get AI analysis
+      // Get current user session
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/");
         return;
       }
 
+      // Get AI analysis
       const analysisResponse = await supabase.functions.invoke('analyze-entry', {
         body: { title, content },
       });
@@ -46,13 +47,12 @@ const NewEntry = () => {
       // Save entry to database
       const { error: saveError } = await supabase
         .from('journal_entries')
-        .insert([
-          {
-            title,
-            content,
-            ai_analysis: analysis,
-          },
-        ]);
+        .insert({
+          title,
+          content,
+          ai_analysis: analysis,
+          user_id: session.user.id
+        });
 
       if (saveError) throw saveError;
 
