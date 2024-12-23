@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { PlusCircle, BookOpen, LogOut } from "lucide-react";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 interface JournalEntry {
   id: string;
@@ -16,41 +17,58 @@ interface JournalEntry {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/");
-        return;
+    const checkUserAndFetchEntries = async () => {
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) throw sessionError;
+        
+        if (!session) {
+          navigate("/");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("journal_entries")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        
+        setEntries(data || []);
+      } catch (error) {
+        console.error("Error:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load your journal entries. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
       }
-      fetchEntries();
     };
 
-    checkUser();
-  }, [navigate]);
-
-  const fetchEntries = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("journal_entries")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setEntries(data || []);
-    } catch (error) {
-      console.error("Error fetching entries:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    checkUserAndFetchEntries();
+  }, [navigate, toast]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
