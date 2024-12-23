@@ -1,12 +1,58 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session) {
+          navigate("/dashboard");
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-[#FFF5E6] flex flex-col items-center justify-center p-4">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-[#4A154B] mb-2">
+            Journey Within
+          </h1>
+          <p className="text-lg text-gray-600 mb-8">
+            Document your spiritual journey and receive divine insights from the Bhagavad Gita
+          </p>
+        </div>
+        
+        <div className="bg-white p-8 rounded-lg shadow-lg border border-[#FFD700]/20">
+          <Auth
+            supabaseClient={supabase}
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#FF5733',
+                    brandAccent: '#4A154B',
+                  },
+                },
+              },
+            }}
+            providers={[]}
+          />
+        </div>
       </div>
+      
+      {/* Decorative Elements */}
+      <div className="fixed top-0 left-0 w-32 h-32 bg-[#FFD700]/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="fixed bottom-0 right-0 w-48 h-48 bg-[#FF5733]/10 rounded-full translate-x-1/2 translate-y-1/2" />
     </div>
   );
 };
