@@ -1,3 +1,5 @@
+project_id = "eggkustytdsywxjccuiw"
+
 [functions]
 [functions.analyze-entry]
 verify_jwt = true

@@ -7,18 +7,22 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { title, content, prompt } = await req.json();
+    console.log('Received request with title:', title);
     
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
     if (!groqApiKey) {
+      console.error('GROQ_API_KEY is not set');
       throw new Error('GROQ_API_KEY is not set');
     }
 
+    console.log('Making request to Groq API...');
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -44,10 +48,12 @@ serve(async (req) => {
 
     if (!response.ok) {
       const error = await response.text();
+      console.error('Groq API error:', error);
       throw new Error(`Groq API error: ${error}`);
     }
 
     const data = await response.json();
+    console.log('Successfully received Groq API response');
     const analysis = data.choices[0].message.content;
 
     return new Response(
