@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, LogOut } from "lucide-react";
+import { PlusCircle, LogOut, UserCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EntryCard } from "@/components/journal/EntryCard";
 import { EmptyState } from "@/components/journal/EmptyState";
@@ -134,12 +134,44 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = async (entryId: string) => {
+    try {
+      const { error } = await supabase
+        .from('journal_entries')
+        .delete()
+        .eq('id', entryId);
+
+      if (error) throw error;
+
+      setEntries(entries.filter(entry => entry.id !== entryId));
+      
+      toast({
+        title: "Success",
+        description: "Entry deleted successfully.",
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete the entry. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FFF5E6] p-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-[#4A154B]">Your Spiritual Journal</h1>
           <div className="flex gap-4">
+            <Button
+              onClick={() => navigate("/profile")}
+              variant="outline"
+            >
+              <UserCircle className="mr-2 h-4 w-4" />
+              Profile
+            </Button>
             <Button
               onClick={() => navigate("/new-entry")}
               className="bg-[#FF5733] hover:bg-[#FF5733]/90"
@@ -166,6 +198,7 @@ const Dashboard = () => {
                 entry={entry}
                 analyzingEntryId={analyzingEntryId}
                 onAnalyze={handleAnalyze}
+                onDelete={handleDelete}
               />
             ))}
           </div>
