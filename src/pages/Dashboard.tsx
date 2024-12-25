@@ -8,6 +8,8 @@ import { EmptyState } from "@/components/journal/EmptyState";
 import { EntryFilter } from "@/components/journal/EntryFilter";
 import { EntriesList } from "@/components/journal/EntriesList";
 import { useFilteredEntries } from "@/hooks/useFilteredEntries";
+import { MoodInput } from "@/components/mood/MoodInput";
+import { MoodStats } from "@/components/mood/MoodStats";
 
 interface JournalEntry {
   id: string;
@@ -187,6 +189,11 @@ const Dashboard = () => {
               Sign Out
             </Button>
           </div>
+        </div>
+
+        <div className="grid gap-6 mb-6">
+          <MoodInput />
+          <MoodStats />
         </div>
 
         <EntryFilter onFilterChange={setFilterType} />
