@@ -27,14 +27,27 @@ export function MoodInput() {
     }
 
     try {
+      // Get the current user
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) throw sessionError;
+      
+      if (!session?.user) {
+        toast({
+          title: "Please sign in",
+          description: "You need to be signed in to record your mood.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from("mood_entries")
-        .insert([
-          {
-            mood: selectedMood,
-            note: note.trim() || null,
-          },
-        ]);
+        .insert({
+          mood: selectedMood,
+          note: note.trim() || null,
+          user_id: session.user.id,
+        });
 
       if (error) throw error;
 
