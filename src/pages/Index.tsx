@@ -10,39 +10,40 @@ const Index = () => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
           navigate("/mood");
+        }
+        // Handle auth errors
+        if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
+          const error = await supabase.auth.getError();
+          if (error) {
+            if (error.message.includes("weak_password")) {
+              toast({
+                title: "Password Too Weak",
+                description: "Password should be at least 6 characters long.",
+                variant: "destructive",
+              });
+            } else if (error.message.includes("invalid_credentials")) {
+              toast({
+                title: "Invalid Credentials",
+                description: "Please check your email and password.",
+                variant: "destructive",
+              });
+            } else {
+              toast({
+                title: "Authentication Error",
+                description: error.message,
+                variant: "destructive",
+              });
+            }
+          }
         }
       }
     );
 
-    // Listen for auth errors
-    const authListener = supabase.auth.onError((error) => {
-      if (error.message.includes("weak_password")) {
-        toast({
-          title: "Password Too Weak",
-          description: "Password should be at least 6 characters long.",
-          variant: "destructive",
-        });
-      } else if (error.message.includes("invalid_credentials")) {
-        toast({
-          title: "Invalid Credentials",
-          description: "Please check your email and password.",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Authentication Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    });
-
     return () => {
       subscription.unsubscribe();
-      authListener.data.subscription.unsubscribe();
     };
   }, [navigate]);
 
