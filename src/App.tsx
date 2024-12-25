@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NewEntry from "./pages/NewEntry";
 import Profile from "./pages/Profile";
+import MoodLanding from "./pages/MoodLanding";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/mood" element={<MoodLanding />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/new-entry" element={<NewEntry />} />
           <Route path="/profile" element={<Profile />} />
