@@ -4,8 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, LogOut, UserCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { EntryCard } from "@/components/journal/EntryCard";
 import { EmptyState } from "@/components/journal/EmptyState";
+import { EntryFilter } from "@/components/journal/EntryFilter";
+import { EntriesList } from "@/components/journal/EntriesList";
+import { useFilteredEntries } from "@/hooks/useFilteredEntries";
 
 interface JournalEntry {
   id: string;
@@ -22,6 +24,7 @@ const Dashboard = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [analyzingEntryId, setAnalyzingEntryId] = useState<string | null>(null);
+  const { filteredEntries, setFilterType } = useFilteredEntries(entries);
 
   useEffect(() => {
     const checkUserAndFetchEntries = async () => {
@@ -186,22 +189,19 @@ const Dashboard = () => {
           </div>
         </div>
 
+        <EntryFilter onFilterChange={setFilterType} />
+
         {loading ? (
           <div className="text-center py-8">Loading your entries...</div>
         ) : entries.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid gap-6">
-            {entries.map((entry) => (
-              <EntryCard
-                key={entry.id}
-                entry={entry}
-                analyzingEntryId={analyzingEntryId}
-                onAnalyze={handleAnalyze}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
+          <EntriesList
+            entries={filteredEntries}
+            analyzingEntryId={analyzingEntryId}
+            onAnalyze={handleAnalyze}
+            onDelete={handleDelete}
+          />
         )}
       </div>
     </div>
