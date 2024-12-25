@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -16,7 +17,33 @@ const Index = () => {
       }
     );
 
-    return () => subscription.unsubscribe();
+    // Listen for auth errors
+    const authListener = supabase.auth.onError((error) => {
+      if (error.message.includes("weak_password")) {
+        toast({
+          title: "Password Too Weak",
+          description: "Password should be at least 6 characters long.",
+          variant: "destructive",
+        });
+      } else if (error.message.includes("invalid_credentials")) {
+        toast({
+          title: "Invalid Credentials",
+          description: "Please check your email and password.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Authentication Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      authListener.data.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   return (
