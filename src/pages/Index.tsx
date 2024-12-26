@@ -14,20 +14,21 @@ const Index = () => {
         if (event === 'SIGNED_IN' && session) {
           navigate("/mood");
         }
-        // Handle auth errors
-        if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
-          const error = await supabase.auth.getError();
+        
+        // Handle auth errors based on event type
+        if (event === 'SIGNED_OUT') {
+          const { error } = await supabase.auth.getSession();
           if (error) {
-            if (error.message.includes("weak_password")) {
-              toast({
-                title: "Password Too Weak",
-                description: "Password should be at least 6 characters long.",
-                variant: "destructive",
-              });
-            } else if (error.message.includes("invalid_credentials")) {
+            if (error.message.includes("Invalid login credentials")) {
               toast({
                 title: "Invalid Credentials",
                 description: "Please check your email and password.",
+                variant: "destructive",
+              });
+            } else if (error.message.includes("Password should be")) {
+              toast({
+                title: "Password Too Weak",
+                description: "Password should be at least 6 characters long.",
                 variant: "destructive",
               });
             } else {
