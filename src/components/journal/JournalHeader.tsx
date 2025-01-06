@@ -10,16 +10,16 @@ export const JournalHeader = ({ onSignOut }: JournalHeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-      <h1 className="text-3xl font-bold text-[#6E59A5]">Your Spiritual Journal</h1>
-      <div className="flex flex-wrap gap-3">
+    <div className="flex flex-col gap-6 mb-8">
+      <h1 className="text-3xl font-bold text-[#6E59A5] text-center">Your Spiritual Journal</h1>
+      <div className="flex justify-center gap-2">
         <Button
           onClick={() => navigate("/mood")}
           variant="outline"
           className="bg-white border-[#D6BCFA] text-[#7E69AB] hover:bg-[#F1F0FB]"
         >
           <Home className="mr-2 h-4 w-4" />
-          Back to Home
+          Home
         </Button>
         <Button
           onClick={() => navigate("/profile")}
