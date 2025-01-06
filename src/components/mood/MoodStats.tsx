@@ -48,30 +48,38 @@ export function MoodStats() {
 
   const config = {
     good: {
-      color: "#22c55e",
+      color: "#9b87f5",
     },
     neutral: {
-      color: "#f59e0b",
+      color: "#7E69AB",
     },
     bad: {
-      color: "#ef4444",
+      color: "#F1F0FB",
     },
   };
 
   return (
-    <Card className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">Your Mood This Week</h2>
+    <Card className="p-6 bg-white shadow-sm border border-[#F1F0FB]">
+      <h2 className="text-2xl font-semibold mb-6 text-center text-[#333]">Your Spiritual Journey</h2>
       <div className="h-[300px]">
         <ChartContainer config={config}>
-          <BarChart data={moodData}>
-            <XAxis dataKey="day" />
-            <YAxis />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="good" stackId="mood" fill={config.good.color} />
-            <Bar dataKey="neutral" stackId="mood" fill={config.neutral.color} />
-            <Bar dataKey="bad" stackId="mood" fill={config.bad.color} />
-          </BarChart>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={moodData}>
+              <XAxis dataKey="day" stroke="#666" />
+              <YAxis stroke="#666" />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Bar dataKey="good" stackId="mood" fill={config.good.color} />
+              <Bar dataKey="neutral" stackId="mood" fill={config.neutral.color} />
+              <Bar dataKey="bad" stackId="mood" fill={config.bad.color} />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
+      </div>
+      <div className="mt-6 text-center">
+        <p className="text-gray-600 italic">
+          "The wise see that there is action in the midst of inaction and inaction in the midst of action."
+        </p>
+        <p className="text-sm text-gray-500">- Bhagavad Gita</p>
       </div>
     </Card>
   );

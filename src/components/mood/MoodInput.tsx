@@ -27,7 +27,6 @@ export function MoodInput() {
     }
 
     try {
-      // Get the current user
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError) throw sessionError;
@@ -69,14 +68,18 @@ export function MoodInput() {
   };
 
   return (
-    <Card className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">How are you feeling today?</h2>
+    <Card className="p-6 bg-white shadow-sm border border-[#F1F0FB]">
+      <h2 className="text-2xl font-semibold mb-6 text-center text-[#333]">How are you feeling today?</h2>
       <div className="flex gap-4 justify-center mb-6">
         {moods.map(({ value, icon: Icon, label }) => (
           <Button
             key={value}
             variant={selectedMood === value ? "default" : "outline"}
-            className="flex flex-col gap-2 h-auto p-4"
+            className={`flex flex-col gap-2 h-auto p-4 ${
+              selectedMood === value 
+                ? "bg-[#9b87f5] hover:bg-[#7E69AB] text-white" 
+                : "hover:border-[#9b87f5] hover:text-[#9b87f5]"
+            }`}
             onClick={() => setSelectedMood(value)}
           >
             <Icon className="h-8 w-8" />
@@ -88,11 +91,11 @@ export function MoodInput() {
         placeholder="Add a note about how you're feeling (optional)"
         value={note}
         onChange={(e) => setNote(e.target.value)}
-        className="mb-4"
+        className="mb-4 border-[#F1F0FB] focus:border-[#9b87f5] focus:ring-[#9b87f5]"
       />
       <Button 
         onClick={handleSubmit}
-        className="w-full"
+        className="w-full bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
         disabled={!selectedMood}
       >
         Record Mood
