@@ -10,13 +10,13 @@ export const JournalHeader = ({ onSignOut }: JournalHeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between items-center mb-8">
-      <h1 className="text-3xl font-bold text-[#4A154B]">Your Spiritual Journal</h1>
-      <div className="flex gap-4">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+      <h1 className="text-3xl font-bold text-[#6E59A5]">Your Spiritual Journal</h1>
+      <div className="flex flex-wrap gap-3">
         <Button
           onClick={() => navigate("/mood")}
           variant="outline"
-          className="bg-white"
+          className="bg-white border-[#D6BCFA] text-[#7E69AB] hover:bg-[#F1F0FB]"
         >
           <Home className="mr-2 h-4 w-4" />
           Back to Home
@@ -24,18 +24,23 @@ export const JournalHeader = ({ onSignOut }: JournalHeaderProps) => {
         <Button
           onClick={() => navigate("/profile")}
           variant="outline"
+          className="border-[#D6BCFA] text-[#7E69AB] hover:bg-[#F1F0FB]"
         >
           <UserCircle className="mr-2 h-4 w-4" />
           Profile
         </Button>
         <Button
           onClick={() => navigate("/new-entry")}
-          className="bg-[#FF5733] hover:bg-[#FF5733]/90"
+          className="bg-[#9b87f5] hover:bg-[#8B5CF6] text-white"
         >
           <PlusCircle className="mr-2 h-4 w-4" />
           New Entry
         </Button>
-        <Button variant="outline" onClick={onSignOut}>
+        <Button 
+          variant="outline" 
+          onClick={onSignOut}
+          className="border-[#D6BCFA] text-[#7E69AB] hover:bg-[#F1F0FB]"
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Sign Out
         </Button>

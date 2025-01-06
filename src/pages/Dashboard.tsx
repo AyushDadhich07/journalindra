@@ -30,13 +30,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5E6] p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#F1F0FB] to-white">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <JournalHeader onSignOut={handleSignOut} />
+        <div className="mb-8 p-6 bg-white rounded-lg shadow-sm border border-[#F1F0FB]">
+          <p className="text-center text-gray-600 italic mb-4">
+            "The mind acts like an enemy for those who do not control it."
+          </p>
+          <p className="text-sm text-center text-gray-500">- Bhagavad Gita</p>
+        </div>
         <EntryFilter onFilterChange={setFilterType} />
 
         {loading ? (
-          <div className="text-center py-8">Loading your entries...</div>
+          <div className="text-center py-8 text-[#7E69AB] animate-pulse">
+            Loading your spiritual journey...
+          </div>
         ) : entries.length === 0 ? (
           <EmptyState />
         ) : (

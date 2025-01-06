@@ -8,7 +8,7 @@ export const EntryFilter = ({ onFilterChange }: EntryFilterProps) => {
   return (
     <div className="mb-6">
       <Select onValueChange={onFilterChange} defaultValue="all">
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-[200px] border-[#D6BCFA] bg-white text-[#6E59A5]">
           <SelectValue placeholder="Filter by date" />
         </SelectTrigger>
         <SelectContent>

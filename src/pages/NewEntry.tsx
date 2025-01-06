@@ -66,20 +66,23 @@ const NewEntry = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5E6] p-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#F1F0FB] to-white p-6">
       <div className="max-w-2xl mx-auto">
-        <Card className="bg-white shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-[#4A154B]">
+        <Card className="bg-white shadow-sm border border-[#D6BCFA]">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-[#6E59A5]">
               New Journal Entry
             </CardTitle>
+            <p className="text-[#8E9196] mt-2 italic">
+              "Write your thoughts with clarity, for they shape your reality."
+            </p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="title"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-[#7E69AB] mb-1"
                 >
                   Title
                 </label>
@@ -89,12 +92,13 @@ const NewEntry = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Give your entry a meaningful title"
                   disabled={isSubmitting}
+                  className="border-[#D6BCFA] focus:ring-[#9b87f5]"
                 />
               </div>
               <div>
                 <label
                   htmlFor="content"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-[#7E69AB] mb-1"
                 >
                   Your Thoughts
                 </label>
@@ -103,7 +107,7 @@ const NewEntry = () => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Share your thoughts, feelings, and experiences..."
-                  className="min-h-[200px]"
+                  className="min-h-[200px] border-[#D6BCFA] focus:ring-[#9b87f5]"
                   disabled={isSubmitting}
                 />
               </div>
@@ -113,12 +117,13 @@ const NewEntry = () => {
                   variant="outline"
                   onClick={() => navigate("/dashboard")}
                   disabled={isSubmitting}
+                  className="border-[#D6BCFA] text-[#7E69AB] hover:bg-[#F1F0FB]"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-[#FF5733] hover:bg-[#FF5733]/90"
+                  className="bg-[#9b87f5] hover:bg-[#8B5CF6] text-white"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
