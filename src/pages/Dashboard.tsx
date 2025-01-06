@@ -7,6 +7,8 @@ import { EntriesList } from "@/components/journal/EntriesList";
 import { JournalHeader } from "@/components/journal/JournalHeader";
 import { useFilteredEntries } from "@/hooks/useFilteredEntries";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
+import { Button } from "@/components/ui/button";
+import { Home, PenSquare, UserCircle } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -31,13 +33,39 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F1F0FB] to-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#F1F0FB] py-4 px-6 z-50">
+        <div className="max-w-4xl mx-auto flex justify-center space-x-8">
+          <Button
+            variant="ghost"
+            className="text-[#6E59A5] hover:bg-[#F1F0FB]"
+            onClick={() => navigate("/")}
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-[#6E59A5] hover:bg-[#F1F0FB]"
+            onClick={() => navigate("/new-entry")}
+          >
+            <PenSquare className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-[#6E59A5] hover:bg-[#F1F0FB]"
+            onClick={() => navigate("/profile")}
+          >
+            <UserCircle className="h-5 w-5" />
+          </Button>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 py-8 pb-24">
         <JournalHeader onSignOut={handleSignOut} />
         <div className="mb-8 p-6 bg-white rounded-lg shadow-sm border border-[#F1F0FB]">
-          <p className="text-center text-gray-600 italic mb-4">
+          <p className="text-center text-[#7E69AB] italic mb-4">
             "The mind acts like an enemy for those who do not control it."
           </p>
-          <p className="text-sm text-center text-gray-500">- Bhagavad Gita</p>
+          <p className="text-sm text-center text-[#8E9196]">- Bhagavad Gita</p>
         </div>
         <EntryFilter onFilterChange={setFilterType} />
 

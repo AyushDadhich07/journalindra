@@ -24,8 +24,9 @@ export const EntriesList = ({
 }: EntriesListProps) => {
   if (entries.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        No entries found for this time period.
+      <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-[#F1F0FB]">
+        <p className="text-[#7E69AB]">No entries found for this time period.</p>
+        <p className="text-sm text-[#8E9196] mt-2">Start your spiritual journey by creating a new entry.</p>
       </div>
     );
   }
