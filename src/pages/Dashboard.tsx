@@ -38,7 +38,7 @@ const Dashboard = () => {
           <Button
             variant="ghost"
             className="text-[#6E59A5] hover:bg-[#F1F0FB]"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/mood")}
           >
             <Home className="h-5 w-5" />
           </Button>
